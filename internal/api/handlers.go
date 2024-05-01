@@ -127,7 +127,6 @@ func (h *Handlers) createEncrypt(w http.ResponseWriter, r *http.Request) {
 		data.Plaintext,
 	)
 	if err != nil {
-		// FIXME: log the error
 		render.Render(w, r, h.ErrInternalServer(err))
 		return
 	}

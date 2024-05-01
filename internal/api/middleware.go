@@ -21,7 +21,6 @@ func (h *Handlers) sessionCtx(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		sessionID := chi.URLParam(r, "sessionID")
 		session, err := h.sessionStore.GetSession(sessionID)
-		h.logger.Info("got here", "session", session)
 		if err != nil {
 			if err == sessionstore.ErrDatabaseError {
 				render.Render(w, r, h.ErrInternalServer(err))
