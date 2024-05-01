@@ -1,8 +1,8 @@
 package api
 
 import (
-	"asostechtest/internal/encryption"
-	"asostechtest/internal/sessionstore"
+	"atostechtest/internal/encryption"
+	"atostechtest/internal/sessionstore"
 	"log/slog"
 	"net/http"
 
@@ -17,7 +17,7 @@ type Handlers struct {
 	logger       *slog.Logger
 }
 
-// @title			Richard Merry ASOS Tech Test
+// @title			Richard Merry ATOS Tech Test
 // @description	A simple API for creating symmetric encryption sessions within which plaintext can be encrypted and cipher text decrypted. Sessions have a limited lifetime, currently set to 10 minutes.
 // @contact.name	Richard Merry
 // @host			localhost:8081
@@ -66,16 +66,19 @@ func NewHTTPHandlers(sessionStore *sessionstore.Store) *Handlers {
 
 // Decrypts a base64 encoded cipher text input and return an unencoded plaintext.
 //
-//	@Tags		encryption, session
-//	@Accept		json
-//	@Produce	json
-//	@Param		session_id	path		string			false	"An encryption session ID"
-//	@Param		request		body		DecryptRequest	true	"Request body"
-//	@Success	200			{object}	DecryptResponse
-//	@Failure	400			{object}	ErrResponse
-//	@Failure	404			{object}	ErrResponse
-//	@Failure	500			{object}	ErrResponse
-//	@Router		/session/{session_id}/decrypt   [post]
+//	@Summary		Decrypt cipher text.
+//	@Description	Decrypt cipher text in the context of a specific encryption session.
+//	@Description	The cipher will be decrypted using the specific algorithm and key associated with the session.
+//	@Tags			encryption, session
+//	@Accept			json
+//	@Produce		json
+//	@Param			session_id	path		string			false	"An encryption session ID"
+//	@Param			request		body		DecryptRequest	true	"Request body"
+//	@Success		200			{object}	DecryptResponse
+//	@Failure		400			{object}	ErrResponse
+//	@Failure		404			{object}	ErrResponse
+//	@Failure		500			{object}	ErrResponse
+//	@Router			/session/{session_id}/decrypt   [post]
 func (h *Handlers) createDecrypt(w http.ResponseWriter, r *http.Request) {
 	data := &DecryptRequest{}
 	if err := render.Bind(r, data); err != nil {
@@ -103,16 +106,19 @@ func (h *Handlers) createDecrypt(w http.ResponseWriter, r *http.Request) {
 
 // Encrypt a non-encoded plaintext input and returns a base64 encoded cipher text.
 //
-//	@Tags		encryption, session
-//	@Accept		json
-//	@Produce	json
-//	@Param		session_id	path		string			false	"An encryption session ID"
-//	@Param		request		body		EncryptRequest	true	"Request body"
-//	@Success	200			{object}	EncryptResponse
-//	@Failure	400			{object}	ErrResponse
-//	@Failure	404			{object}	ErrResponse
-//	@Failure	500			{object}	ErrResponse
-//	@Router		/session/{session_id}/encrypt   [post]
+//	@Summary		Encrypt plaintext.
+//	@Description	Encrypt plaintext in the context of a specific encryption session.
+//	@Description	The plaintext will be encrypted using the specific algorithm and key associated with the session.
+//	@Tags			encryption, session
+//	@Accept			json
+//	@Produce		json
+//	@Param			session_id	path		string			false	"An encryption session ID"
+//	@Param			request		body		EncryptRequest	true	"Request body"
+//	@Success		200			{object}	EncryptResponse
+//	@Failure		400			{object}	ErrResponse
+//	@Failure		404			{object}	ErrResponse
+//	@Failure		500			{object}	ErrResponse
+//	@Router			/session/{session_id}/encrypt   [post]
 func (h *Handlers) createEncrypt(w http.ResponseWriter, r *http.Request) {
 	data := &EncryptRequest{}
 	if err := render.Bind(r, data); err != nil {
@@ -137,14 +143,16 @@ func (h *Handlers) createEncrypt(w http.ResponseWriter, r *http.Request) {
 
 // Creates an encryption session given an algorithm type and key.
 //
-//	@Tags		encryption, session
-//	@Accept		json
-//	@Produce	json
-//	@Param		request	body		SessionRequest	true	"Request body"
-//	@Success	200		{object}	SessionResponse
-//	@Failure	400		{object}	ErrResponse
-//	@Failure	500		{object}	ErrResponse
-//	@Router		/session   [post]
+//	@Summary		Create encryption session.
+//	@Description	Create an encryption session associating a session with a specific algorithm and key.
+//	@Tags			encryption, session
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		SessionRequest	true	"Request body"
+//	@Success		200		{object}	SessionResponse
+//	@Failure		400		{object}	ErrResponse
+//	@Failure		500		{object}	ErrResponse
+//	@Router			/session   [post]
 func (h *Handlers) createSession(w http.ResponseWriter, r *http.Request) {
 	data := &SessionRequest{}
 	if err := render.Bind(r, data); err != nil {
@@ -164,10 +172,13 @@ func (h *Handlers) createSession(w http.ResponseWriter, r *http.Request) {
 
 // Retrieves the list of supported symmetric encryption algorithms.
 //
-//	@Tags		encryption, algorithms
-//	@Produce	json
-//	@Success	200	{object}	AlgorithmsResponse
-//	@Router		/algorithms   [get]
+//	@Summary		List supported symmetric encryption algorithms.
+//	@Description	Returns a list of all supported symmetric encryption algorithms.
+//	@Description	These can then be used when creating a session.
+//	@Tags			encryption, algorithms
+//	@Produce		json
+//	@Success		200	{object}	AlgorithmsResponse
+//	@Router			/algorithms   [get]
 func (h *Handlers) getAlgorithms(w http.ResponseWriter, r *http.Request) {
 	render.Status(r, http.StatusOK)
 	render.Render(w, r, &AlgorithmsResponse{Names: encryption.Algorithms()})

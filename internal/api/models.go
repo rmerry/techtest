@@ -1,7 +1,7 @@
 package api
 
 import (
-	"asostechtest/internal/encryption"
+	"atostechtest/internal/encryption"
 	"errors"
 	"net/http"
 	"strings"
@@ -22,7 +22,8 @@ func (a *AlgorithmsResponse) Render(w http.ResponseWriter, r *http.Request) erro
 //
 // @Description Used for encrypting plaintext under a given session context.
 type EncryptRequest struct {
-	Plaintext string `json:"plaintext"` // The plaintext to encrypt.
+	// The plaintext to encrypt.
+	Plaintext string `json:"plaintext"`
 }
 
 func (er *EncryptRequest) Bind(r *http.Request) error {

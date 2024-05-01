@@ -1,9 +1,9 @@
 package main
 
 import (
-	"asostechtest/internal/api"
-	"asostechtest/internal/datastore"
-	"asostechtest/internal/sessionstore"
+	"atostechtest/internal/api"
+	"atostechtest/internal/datastore"
+	"atostechtest/internal/sessionstore"
 	"context"
 	"fmt"
 	"log/slog"

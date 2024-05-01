@@ -1,7 +1,7 @@
 package api
 
 import (
-	sessionstore "asostechtest/internal/sessionstore"
+	sessionstore "atostechtest/internal/sessionstore"
 	"context"
 	"fmt"
 	"log/slog"

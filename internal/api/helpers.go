@@ -1,6 +1,6 @@
 package api
 
-import "asostechtest/internal/encryption"
+import "atostechtest/internal/encryption"
 
 // algorithmFromText takes a text input (as will come via the API) algorithm
 // name and turns it into a hard coded Algorithm type as understood by the

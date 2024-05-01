@@ -19,6 +19,7 @@ const docTemplate = `{
     "paths": {
         "/algorithms": {
             "get": {
+                "description": "Returns a list of all supported symmetric encryption algorithms.\nThese can then be used when creating a session.",
                 "produces": [
                     "application/json"
                 ],
@@ -26,6 +27,7 @@ const docTemplate = `{
                     "encryption",
                     "algorithms"
                 ],
+                "summary": "List supported symmetric encryption algorithms.",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -38,6 +40,7 @@ const docTemplate = `{
         },
         "/session": {
             "post": {
+                "description": "Create an encryption session associating a session with a specific algorithm and key.",
                 "consumes": [
                     "application/json"
                 ],
@@ -48,6 +51,7 @@ const docTemplate = `{
                     "encryption",
                     "session"
                 ],
+                "summary": "Create encryption session.",
                 "parameters": [
                     {
                         "description": "Request body",
@@ -83,6 +87,7 @@ const docTemplate = `{
         },
         "/session/{session_id}/decrypt": {
             "post": {
+                "description": "Decrypt cipher text in the context of a specific encryption session.\nThe cipher will be decrypted using the specific algorithm and key associated with the session.",
                 "consumes": [
                     "application/json"
                 ],
@@ -93,6 +98,7 @@ const docTemplate = `{
                     "encryption",
                     "session"
                 ],
+                "summary": "Decrypt cipher text.",
                 "parameters": [
                     {
                         "type": "string",
@@ -140,6 +146,7 @@ const docTemplate = `{
         },
         "/session/{session_id}/encrypt": {
             "post": {
+                "description": "Encrypt plaintext in the context of a specific encryption session.\nThe plaintext will be encrypted using the specific algorithm and key associated with the session.",
                 "consumes": [
                     "application/json"
                 ],
@@ -150,6 +157,7 @@ const docTemplate = `{
                     "encryption",
                     "session"
                 ],
+                "summary": "Encrypt plaintext.",
                 "parameters": [
                     {
                         "type": "string",
@@ -212,7 +220,13 @@ const docTemplate = `{
         },
         "api.DecryptRequest": {
             "description": "Used for decrypted cipher text under a given session context.",
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "ciphertext": {
+                    "description": "The cipher text to decrypt.",
+                    "type": "string"
+                }
+            }
         },
         "api.DecryptResponse": {
             "description": "Contains successfully decrypted message as plaintext.",
@@ -289,7 +303,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8081",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
-	Title:            "Richard Merry ASOS Tech Test",
+	Title:            "Richard Merry ATOS Tech Test",
 	Description:      "A simple API for creating symmetric encryption sessions within which plaintext can be encrypted and cipher text decrypted. Sessions have a limited lifetime, currently set to 10 minutes.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

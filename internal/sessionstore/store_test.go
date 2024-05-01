@@ -1,7 +1,7 @@
 package sessionstore
 
 import (
-	"asostechtest/internal/datastore"
+	"atostechtest/internal/datastore"
 	"errors"
 	"testing"
 	"time"
