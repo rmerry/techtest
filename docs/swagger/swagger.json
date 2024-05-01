@@ -1,0 +1,277 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "A simple API for creating symmetric encryption sessions within which plaintext can be encrypted and cipher text decrypted. Sessions have a limited lifetime, currently set to 10 minutes.",
+        "title": "Richard Merry ASOS Tech Test",
+        "contact": {
+            "name": "Richard Merry"
+        }
+    },
+    "host": "localhost:8081",
+    "basePath": "/api/v1",
+    "paths": {
+        "/algorithms": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "encryption",
+                    "algorithms"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.AlgorithmsResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/session": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "encryption",
+                    "session"
+                ],
+                "parameters": [
+                    {
+                        "description": "Request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.SessionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.SessionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/session/{session_id}/decrypt": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "encryption",
+                    "session"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "An encryption session ID",
+                        "name": "session_id",
+                        "in": "path"
+                    },
+                    {
+                        "description": "Request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.DecryptRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.DecryptResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/session/{session_id}/encrypt": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "encryption",
+                    "session"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "An encryption session ID",
+                        "name": "session_id",
+                        "in": "path"
+                    },
+                    {
+                        "description": "Request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.EncryptRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.EncryptResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "api.AlgorithmsResponse": {
+            "description": "Complete list of supported symmetric encryption algorithms.",
+            "type": "object",
+            "properties": {
+                "names": {
+                    "description": "The list of supported algorithms.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "api.DecryptRequest": {
+            "description": "Used for decrypted cipher text under a given session context.",
+            "type": "object"
+        },
+        "api.DecryptResponse": {
+            "description": "Contains successfully decrypted message as plaintext.",
+            "type": "object",
+            "properties": {
+                "plaintext": {
+                    "type": "string"
+                }
+            }
+        },
+        "api.EncryptRequest": {
+            "description": "Used for encrypting plaintext under a given session context.",
+            "type": "object",
+            "properties": {
+                "plaintext": {
+                    "description": "The plaintext to encrypt.",
+                    "type": "string"
+                }
+            }
+        },
+        "api.EncryptResponse": {
+            "description": "Contains successfully encrypted message base64 encoded as cipher text.",
+            "type": "object",
+            "properties": {
+                "cipher_text": {
+                    "type": "string"
+                }
+            }
+        },
+        "api.ErrResponse": {
+            "description": "Error object encapsulating all returned API errors.",
+            "type": "object",
+            "properties": {
+                "error": {
+                    "description": "A more detailed error description.",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "A terse error description.",
+                    "type": "string"
+                }
+            }
+        },
+        "api.SessionRequest": {
+            "description": "Used for configuring and creating a new encryption session.",
+            "type": "object",
+            "properties": {
+                "algorithm": {
+                    "description": "The Algorithm to associate with this session.",
+                    "type": "string"
+                },
+                "key": {
+                    "description": "The key to associate with this session.",
+                    "type": "string"
+                }
+            }
+        },
+        "api.SessionResponse": {
+            "description": "Contains the session ID which can be used in calls to encrypt and decrypt input.",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The session ID.",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

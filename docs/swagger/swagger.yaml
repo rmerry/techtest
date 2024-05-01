@@ -1,0 +1,187 @@
+basePath: /api/v1
+definitions:
+  api.AlgorithmsResponse:
+    description: Complete list of supported symmetric encryption algorithms.
+    properties:
+      names:
+        description: The list of supported algorithms.
+        items:
+          type: string
+        type: array
+    type: object
+  api.DecryptRequest:
+    description: Used for decrypted cipher text under a given session context.
+    type: object
+  api.DecryptResponse:
+    description: Contains successfully decrypted message as plaintext.
+    properties:
+      plaintext:
+        type: string
+    type: object
+  api.EncryptRequest:
+    description: Used for encrypting plaintext under a given session context.
+    properties:
+      plaintext:
+        description: The plaintext to encrypt.
+        type: string
+    type: object
+  api.EncryptResponse:
+    description: Contains successfully encrypted message base64 encoded as cipher
+      text.
+    properties:
+      cipher_text:
+        type: string
+    type: object
+  api.ErrResponse:
+    description: Error object encapsulating all returned API errors.
+    properties:
+      error:
+        description: A more detailed error description.
+        type: string
+      status:
+        description: A terse error description.
+        type: string
+    type: object
+  api.SessionRequest:
+    description: Used for configuring and creating a new encryption session.
+    properties:
+      algorithm:
+        description: The Algorithm to associate with this session.
+        type: string
+      key:
+        description: The key to associate with this session.
+        type: string
+    type: object
+  api.SessionResponse:
+    description: Contains the session ID which can be used in calls to encrypt and
+      decrypt input.
+    properties:
+      id:
+        description: The session ID.
+        type: string
+    type: object
+host: localhost:8081
+info:
+  contact:
+    name: Richard Merry
+  description: A simple API for creating symmetric encryption sessions within which
+    plaintext can be encrypted and cipher text decrypted. Sessions have a limited
+    lifetime, currently set to 10 minutes.
+  title: Richard Merry ASOS Tech Test
+paths:
+  /algorithms:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.AlgorithmsResponse'
+      tags:
+      - encryption
+      - algorithms
+  /session:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/api.SessionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.SessionResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/api.ErrResponse'
+      tags:
+      - encryption
+      - session
+  /session/{session_id}/decrypt:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: An encryption session ID
+        in: path
+        name: session_id
+        type: string
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/api.DecryptRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.DecryptResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/api.ErrResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/api.ErrResponse'
+      tags:
+      - encryption
+      - session
+  /session/{session_id}/encrypt:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: An encryption session ID
+        in: path
+        name: session_id
+        type: string
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/api.EncryptRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.EncryptResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/api.ErrResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/api.ErrResponse'
+      tags:
+      - encryption
+      - session
+swagger: "2.0"
