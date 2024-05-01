@@ -1,7 +1,7 @@
 // Package encryption is a thin layer around a handful of the standard
-// libraries symmetric encryption algorithms. It makes using them sligly easier
-// by providing a simple interace for encrypting and decrypting messages given
-// just an algorithm name, key and body.
+// libraries symmetric encryption algorithms. It makes using them slightly
+// easier by providing a simple interface for encrypting and decrypting
+// messages given just an algorithm name, key and body.
 //
 // It is understood that this wrapper is primitive and rudimentary and should
 // not be used in production, it is simply for illustrative purposes.

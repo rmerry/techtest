@@ -53,7 +53,9 @@ func NewInMemory(maxSessionAge time.Duration) *InMemory {
 // nil is returned. The error will always be nil in this in-memory
 // implementation.
 func (db *InMemory) ReadSession(id string) (*Session, error) {
+	db.mu.Lock()
 	s, ok := db.data[id]
+	db.mu.Unlock()
 	if !ok {
 		return nil, nil
 	}
@@ -104,12 +106,14 @@ func (db *InMemory) cleanUpExpiredSessions() {
 	startTime := time.Now()
 
 	var deleted int
+	db.mu.Lock()
 	for k, v := range db.data {
 		if v != nil && time.Now().Sub(v.CreatedAt) > db.maxSessionAge {
 			delete(db.data, k)
 			deleted += 1
 		}
 	}
+	db.mu.Unlock()
 
 	db.logger.Info("clean up completed",
 		"deleted sessions", deleted,

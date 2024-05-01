@@ -2,6 +2,10 @@
 build:
 	CGO_ENABLED=0 go build -o ./bin/server ./cmd/main.go
 
+.PHONY: run
+run:
+	CGO_ENABLED=0 go run ./cmd/main.go
+
 .PHONY: swag
 swag:
 	swag init --output ./docs/swagger -g ./internal/api/handlers.go
