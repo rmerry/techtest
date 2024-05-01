@@ -2,7 +2,7 @@
 
 ## API Documentation
 
-View the auto-generated Swagger documentation [here](http://test).
+View the auto-generated Swagger documentation [here](https://rmerry.github.io/techtest/).
 
 ## Requirements
 
