@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "description": "A simple API for creating symmetric encryption sessions within which plaintext can be encrypted and cipher text decrypted. Sessions have a limited lifetime, currently set to 10 minutes.",
-        "title": "Richard Merry ASOS Tech Test",
+        "title": "Richard Merry ATOS Tech Test",
         "contact": {
             "name": "Richard Merry"
         }
